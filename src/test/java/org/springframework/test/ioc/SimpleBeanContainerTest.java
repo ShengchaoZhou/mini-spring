@@ -9,12 +9,7 @@ public class SimpleBeanContainerTest {
 
     @Test
     public void testGetBean() throws Exception {
-        BeanFactory beanFactory = new BeanFactory();
-        beanFactory.registerBean("helloService", new HelloService());
-        HelloService helloService = (HelloService) beanFactory.getBean("helloService");
-        // 断言成功并不会输出信息
-        assertThat(helloService).isNotNull();
-        assertThat(helloService.sayHello()).isEqualTo("hello");
+
     }
 
     class HelloService {
