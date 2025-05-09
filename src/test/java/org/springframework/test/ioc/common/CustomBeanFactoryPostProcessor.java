@@ -1,4 +1,4 @@
-package org.springframework.test.ioc;
+package org.springframework.test.ioc.common;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 public class CustomBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        System.out.println("CustomBeanFactoryPostProcessor#postProcessBeanFactory");
         BeanDefinition personBeanDefiniton = beanFactory.getBeanDefinition("person");
         PropertyValues propertyValues = personBeanDefiniton.getPropertyValues();
         //将person的name属性改为ivy

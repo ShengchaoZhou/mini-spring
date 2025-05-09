@@ -15,4 +15,9 @@
     <bean id="car" class="org.springframework.test.ioc.bean.Car">
         <property name="brand" value="porsche"/>
     </bean>
+
+    <!-- 让ApplicationContext 容器在调用 refresh() 时自动识别它们。而不是手动配置。 -->
+    <bean class="org.springframework.test.ioc.common.CustomBeanFactoryPostProcessor"/>
+
+    <bean class="org.springframework.test.ioc.common.CustomerBeanPostProcessor"/>
 </beans>
