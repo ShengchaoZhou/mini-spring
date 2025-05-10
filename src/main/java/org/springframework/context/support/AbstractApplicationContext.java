@@ -81,4 +81,28 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     }
 
     public abstract ConfigurableListableBeanFactory getBeanFactory();
+
+    public void close() {
+        doClose();
+    }
+
+    // 向 JVM 注册一个关闭钩子（Shutdown Hook）线程，当 JVM 关闭（如用户按 Ctrl+C 或调用 System.exit()）时，
+    // 这个线程会被自动执行，确保资源被正常释放，容器优雅关闭。
+    public void registerShutdownHook() {
+        Thread shutdownHook = new Thread() {
+            public void run() {
+                doClose();
+            }
+        };
+        Runtime.getRuntime().addShutdownHook(shutdownHook);
+
+    }
+
+    protected void doClose() {
+        destroyBeans();
+    }
+
+    protected void destroyBeans() {
+        getBeanFactory().destroySingletons();
+    }
 }
