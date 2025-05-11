@@ -4,9 +4,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Shengchao Zhou
@@ -23,7 +23,7 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry{
         return singletonObjects.get(beanName);
     }
 
-    protected void addSingleton(String beanName, Object singletonObject) {
+    public void addSingleton(String beanName, Object singletonObject) {
         singletonObjects.put(beanName, singletonObject);
     }
 
@@ -32,7 +32,7 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry{
     }
 
     public void destroySingletons() {
-        ArrayList<String> beanNames = new ArrayList<>(disposableBeans.keySet());
+        Set<String> beanNames = disposableBeans.keySet();
         for (String beanName : beanNames) {
             DisposableBean disposableBean = disposableBeans.remove(beanName);
             try {
