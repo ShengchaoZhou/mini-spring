@@ -9,12 +9,21 @@ import org.aopalliance.intercept.MethodInterceptor;
  * @date 2025/5/14 19:18
  */
 public class AdvisedSupport {
-
+    // 是否使用cglib代理
+    private boolean proxyTargetClass = false;
     private TargetSource targetSource;
 
     private MethodInterceptor methodInterceptor;
 
     private MethodMatcher methodMatcher;
+
+    public boolean isProxyTargetClass() {
+        return proxyTargetClass;
+    }
+
+    public void setProxyTargetClass(boolean proxyTargetClass) {
+        this.proxyTargetClass = proxyTargetClass;
+    }
 
     public TargetSource getTargetSource() {
         return targetSource;
