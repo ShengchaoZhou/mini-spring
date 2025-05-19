@@ -27,6 +27,7 @@ public class BeanDefinition {
     private boolean singleton = true;
 
     private boolean prototype = false;
+    private boolean lazyInit=false;
 
     public String getInitMethodName() {
         return initMethodName;
@@ -95,5 +96,13 @@ public class BeanDefinition {
     @Override
     public int hashCode() {
         return Objects.hash(beanClass);
+    }
+
+    public void setLazyInit(boolean b){
+        lazyInit=b;
+    }
+
+    public boolean isLazyInit(){
+        return lazyInit;
     }
 }
