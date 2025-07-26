@@ -1,0 +1,39 @@
+# 1、工作流文件名称
+name: Build and Run Openai-Code-Review By Main Maven Jar
+
+# 2、触发规则
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+# 3、构建任务, 其中检出代码与配置JDK环境是通用的
+jobs:
+  build:
+    runs-on: ubuntu-latest # 使用ubuntu最新版本虚拟机
+
+    steps:
+      - name: Checkout repository  # 检出代码
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Setup JDK 17   # 配置JDK环境
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Create libs directory
+        run: mkdir -p ./libs
+
+      - name: Download openai-code-review-sdk JAR
+        run: wget -O ./libs/openai-code-review-sdk-1.0.jar https://github.com/ShengchaoZhou/openai-code-review-log/releases/download/v1.0/openai-code-review-sdk-1.0.jar
+
+      - name: Run Code Review  # 运行SDK的jar包
+        run: java -jar ./libs/openai-code-review-sdk-1.0.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.CODE_TOKEN }}
