@@ -18,6 +18,7 @@ public class WorldServiceImpl implements WorldService {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
