@@ -9,4 +9,6 @@ public interface WorldService {
     void explode();
 
     String getName();
+
+    void setName(String name);
 }

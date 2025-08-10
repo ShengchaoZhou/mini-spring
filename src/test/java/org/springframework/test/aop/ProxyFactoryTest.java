@@ -8,6 +8,7 @@ import org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor
 import org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor;
 import org.springframework.test.common.WorldServiceAfterReturnAdvice;
 import org.springframework.test.common.WorldServiceBeforeAdvice;
+import org.springframework.test.common.WorldServiceBeforeBeforeAdvice;
 import org.springframework.test.service.WorldService;
 import org.springframework.test.service.WorldServiceImpl;
 
@@ -39,6 +40,34 @@ public class ProxyFactoryTest {
         factory.setProxyTargetClass(true);
         factory.addAdvisor(advisor);
         factory.addAdvisor(advisor1);
+        WorldService proxy = (WorldService) factory.getProxy();
+        proxy.explode();
+    }
+
+    @Test
+    public void testMultiBeforeAdvisor() throws Exception {
+        WorldService worldService = new WorldServiceImpl();
+        worldService.setName("earth");
+
+        //Advisor是Pointcut和Advice的组合
+        String expression = "execution(* org.springframework.test.service.WorldService.explode(..))";
+        //第一个Before切面
+        AspectJExpressionPointcutAdvisor advisor1 = new AspectJExpressionPointcutAdvisor();
+        advisor1.setExpression(expression);
+        MethodBeforeAdviceInterceptor before1 = new MethodBeforeAdviceInterceptor(new WorldServiceBeforeBeforeAdvice());
+        advisor1.setAdvice(before1);
+        //第二个Before切面
+        AspectJExpressionPointcutAdvisor advisor2 = new AspectJExpressionPointcutAdvisor();
+        advisor2.setExpression(expression);
+        MethodBeforeAdviceInterceptor before2 = new MethodBeforeAdviceInterceptor(new WorldServiceBeforeAdvice());
+        advisor2.setAdvice(before2);
+        //通过ProxyFactory来获得代理
+        ProxyFactory factory = new ProxyFactory();
+        TargetSource targetSource = new TargetSource(worldService);
+        factory.setTargetSource(targetSource);
+        factory.setProxyTargetClass(true);
+        factory.addAdvisor(advisor1);
+        factory.addAdvisor(advisor2);
         WorldService proxy = (WorldService) factory.getProxy();
         proxy.explode();
     }
